@@ -9,7 +9,7 @@ class CreateProductImplUsecase implements CreateProductUsecase {
   final ProductsRepository _repository;
 
   @override
-  Future<ProductModel> call(ProductDto productDto) async {
+  Future<ProductModel?> call(ProductDto productDto) async {
     return await _repository.createProduct(productDto);
   }
 }

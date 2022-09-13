@@ -31,15 +31,16 @@ class ProductModel {
     return {
       'id': id,
       'name': name,
-      'tags': tags,
+      'tags': tags.join(','),
     };
   }
 
   factory ProductModel.fromMap(Map<String, dynamic> map) {
+    print(map);
     return ProductModel(
-      map['id']?.toInt() ?? 0,
-      map['name'] ?? '',
-      List<String>.from(map['tags']),
+      map['id'],
+      map['name'],
+      map['tags'].toString().split(","),
     );
   }
 

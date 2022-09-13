@@ -8,7 +8,7 @@ class GetAllProductsImplUsecase implements GetAllProductsUsecase {
   final ProductsRepository _repository;
 
   @override
-  Future<List<ProductModel>> call() async {
+  Future<List<ProductModel?>> call() async {
     return await _repository.findAllProducts();
   }
 }
