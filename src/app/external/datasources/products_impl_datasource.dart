@@ -1,33 +1,56 @@
 import '../../data/datasources/products_datasource.dart';
 import '../../domain/dtos/product_dto.dart';
-import '../../domain/models/product_model.dart';
-import '../mocks/products_data.dart';
+import '../databases/sqlite_database.dart';
 
 class ProductsImplDatasource implements ProductsDatasource {
+  final db = SqliteDatabase();
+
   @override
-  Future<List<Map<String, dynamic>>> findAllProducts() async {
+  Future<List<Map<String, dynamic>>?> findAllProducts() async {
     await Future.delayed(Duration(milliseconds: 50));
-    return products;
+    try {
+      return db.select('SELECT * FROM products');
+    } catch (e) {
+      return null;
+    }
   }
 
   @override
-  Future<Map<String, dynamic>> findProductById(int id) async {
+  Future<Map<String, dynamic>?> findProductById(int id) async {
     await Future.delayed(Duration(milliseconds: 50));
-    return products.firstWhere((product) => product["id"] == id);
+    try {
+      var res =
+          db.select('SELECT * FROM products WHERE id = ?', [id.toString()]);
+      if (res.isNotEmpty) {
+        return res.first;
+      } else {
+        return null;
+      }
+    } catch (e) {
+      return null;
+    }
   }
 
   @override
-  Future<Map<String, dynamic>> createProduct(ProductDto productDto) async {
+  Future<Map<String, dynamic>?> createProduct(ProductDto productDto) async {
     await Future.delayed(Duration(milliseconds: 50));
 
-    List<ProductModel> productsSortable =
-        products.map((product) => ProductModel.fromMap(product)).toList();
+    try {
+      db.query('INSERT INTO products (name, tags) VALUES (? , ?)', [
+        productDto.name ?? '',
+        productDto.tags?.join(',') ?? '',
+      ]);
 
-    productsSortable.sort((a, b) => a.id.compareTo(b.id));
+      var res = db.select("SELECT * FROM products");
 
-    productDto = productDto.copyWith(id: productsSortable.last.id + 1);
-    Map<String, dynamic> newProductMap = productDto.toMap();
-    products.add(newProductMap);
-    return newProductMap;
+      if (res.isNotEmpty) {
+        return res.last;
+      } else {
+        return null;
+      }
+    } catch (e) {
+      print(e.toString());
+      return null;
+    }
   }
 }

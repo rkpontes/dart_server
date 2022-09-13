@@ -8,7 +8,7 @@ class GetProductByIdImplUsecase implements GetProductByIdUsecase {
   final ProductsRepository _repository;
 
   @override
-  Future<ProductModel> call(int id) async {
+  Future<ProductModel?> call(int id) async {
     return await _repository.findProductById(id);
   }
 }

@@ -24,10 +24,10 @@ class ProductsController {
 
   FutureOr<Response> getAllProducts(Request request) async {
     try {
-      List<ProductModel> products = await _getAllProductsImplUsecase();
+      List<ProductModel?> products = await _getAllProductsImplUsecase();
       return Response.ok(
         jsonEncode(
-          {"products": products.map((product) => product.toMap()).toList()},
+          {"products": products.map((product) => product?.toMap()).toList()},
         ),
         headers: {HttpHeaders.contentTypeHeader: "application/json"},
       );
@@ -35,7 +35,7 @@ class ProductsController {
       return Response.internalServerError(
         body: jsonEncode(
           {
-            "error": "Ocorreu um erro inesperado!",
+            "error": e.toString(),
           },
         ),
       );
@@ -44,17 +44,17 @@ class ProductsController {
 
   FutureOr<Response> getproductById(Request request, String id) async {
     try {
-      ProductModel product = await _getProductByIdImplUsecase(int.parse(id));
+      ProductModel? product = await _getProductByIdImplUsecase(int.parse(id));
       return Response.ok(
         jsonEncode(
-          {"product": product.toMap()},
+          {"product": product != null ? product.toMap() : 'Not found'},
         ),
         headers: {HttpHeaders.contentTypeHeader: "application/json"},
       );
     } catch (e) {
       return Response.internalServerError(
         body: jsonEncode({
-          "error": "Ocorreu um erro inesperado!",
+          "error": e.toString(),
         }),
         headers: {HttpHeaders.contentTypeHeader: "application/json"},
       );
@@ -66,8 +66,15 @@ class ProductsController {
       final String body = await request.readAsString();
       Map<String, dynamic> productMap = jsonDecode(body);
       final ProductDto newProductDto = ProductDto.fromMap(productMap);
-      final ProductModel newProduct =
+      final ProductModel? newProduct =
           await _createProductUsecase(newProductDto);
+
+      if (newProduct == null) {
+        return Response.badRequest(
+          body: jsonEncode({"error": 'Bad Request.'}),
+          headers: {HttpHeaders.contentTypeHeader: "application/json"},
+        );
+      }
       return Response(
         201,
         body: jsonEncode({"product": newProduct.toMap()}),
