@@ -5,6 +5,7 @@ import 'data/repositories/products_impl_repository.dart';
 import 'domain/usecases/create_product_impl_usecase.dart';
 import 'domain/usecases/get_all_products_impl_usecase.dart';
 import 'domain/usecases/get_product_by_id_impl_usecase.dart';
+import 'external/databases/sqlite_database.dart';
 import 'external/datasources/products_impl_datasource.dart';
 import 'presentation/home/home_controller.dart';
 import 'presentation/products/products_controller.dart';
@@ -25,13 +26,18 @@ class AppInitialize {
   Router get() => router;
 
   void initDependencies() {
+    // DBConnection
+    getIt.registerSingleton(SqliteDatabase());
+
     // Datasources
-    getIt.registerSingleton(ProductsImplDatasource());
+    getIt.registerSingleton(
+      ProductsImplDatasource(getIt<SqliteDatabase>()),
+    );
 
     // Repositories
-    getIt.registerSingleton(
-      ProductsImplRepository(getIt<ProductsImplDatasource>()),
-    );
+    getIt.registerSingleton(ProductsImplRepository(
+      getIt<ProductsImplDatasource>(),
+    ));
 
     // Usecases
     getIt.registerSingleton(

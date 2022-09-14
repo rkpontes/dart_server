@@ -1,9 +1,11 @@
+import '../../data/databases/db_connection.dart';
 import '../../data/datasources/products_datasource.dart';
 import '../../domain/dtos/product_dto.dart';
-import '../databases/sqlite_database.dart';
 
 class ProductsImplDatasource implements ProductsDatasource {
-  final db = SqliteDatabase();
+  ProductsImplDatasource(this.db);
+
+  final DBConnection db;
 
   @override
   Future<List<Map<String, dynamic>>?> findAllProducts() async {
