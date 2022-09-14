@@ -50,4 +50,4 @@ You should see the logging printed in the first terminal:
 
 ## Database
 
-Update database path in `src/app/external/databases/sqlite_database.dart` on line 8
+Update database in files .env or .debug-env
