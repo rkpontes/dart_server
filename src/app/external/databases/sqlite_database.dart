@@ -1,9 +1,9 @@
 import 'package:sqlite3/sqlite3.dart';
 
-import '../../data/databases/database.dart';
+import '../../data/databases/db_connection.dart';
 import '../../data/databases/db_result.dart';
 
-class SqliteDatabase implements DB {
+class SqliteDatabase implements DBConnection {
   final db = sqlite3.open(
     "/Users/raphaelpontes/Documents/Projetos/Dart/dart_server/assets/db/db.sqlite",
   );
