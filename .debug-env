@@ -1,0 +1,6 @@
+DB_TYPE=sqlite
+
+DB_HOST_PATH=/Users/raphaelpontes/Documents/Projetos/Dart/dart_server/assets/db/db-dev.sqlite
+DB_NAME=
+DB_USER=
+DB_PWD=

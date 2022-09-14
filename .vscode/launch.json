@@ -5,10 +5,18 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "dart_server",
+            "name": "Server Prod",
             "request": "launch",
             "type": "dart",
-            "program": "bin/server.dart"
+            "program": "bin/server.dart",
+            "args": ["--mode", "prod"]
+        },
+        {
+            "name": "Server Dev",
+            "request": "launch",
+            "type": "dart",
+            "program": "bin/server.dart",
+            "args": ["--mode", "dev"]
         }
     ]
 }
