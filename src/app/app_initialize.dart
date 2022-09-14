@@ -1,6 +1,8 @@
+import 'package:args/args.dart';
 import 'package:get_it/get_it.dart';
 import 'package:shelf_router/shelf_router.dart';
 
+import 'app_environment.dart';
 import 'data/repositories/products_impl_repository.dart';
 import 'domain/usecases/create_product_impl_usecase.dart';
 import 'domain/usecases/get_all_products_impl_usecase.dart';
@@ -11,12 +13,13 @@ import 'presentation/home/home_controller.dart';
 import 'presentation/products/products_controller.dart';
 
 class AppInitialize {
-  AppInitialize() {
+  AppInitialize(this.params) {
     init();
   }
 
   final router = Router();
   final getIt = GetIt.instance;
+  final Map<String, dynamic>? params;
 
   void init() {
     initDependencies();
@@ -25,9 +28,32 @@ class AppInitialize {
 
   Router get() => router;
 
+  String changePathEnv() {
+    var key = params?["mode"];
+
+    var path = "";
+    switch (key) {
+      case "dev":
+        path = ".debug-env";
+        break;
+      case "prod":
+        path = ".env";
+        break;
+      default:
+        path = ".debug-env";
+        break;
+    }
+
+    return path;
+  }
+
   void initDependencies() {
-    // DBConnection
-    getIt.registerSingleton(SqliteDatabase());
+    var env = AppEnv(changePathEnv());
+    // Utils
+    getIt.registerSingleton(env);
+    if (env["DB_TYPE"] == "sqlite") {
+      getIt.registerSingleton(SqliteDatabase());
+    }
 
     // Datasources
     getIt.registerSingleton(
