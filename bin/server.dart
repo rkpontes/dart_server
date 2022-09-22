@@ -5,11 +5,7 @@ import 'package:shelf/shelf_io.dart';
 import '../src/app/app_initialize.dart';
 
 void main(List<String> args) async {
-  Map<String, dynamic> params = {};
-  params["mode"] = args.last.toString();
-
-  print("MODE: ${params['mode'].toString().toUpperCase()}");
-  var app = AppInitialize(params);
+  var app = AppInitialize();
 
   // Use any available host or container IP (usually `0.0.0.0`).
   final ip = InternetAddress.anyIPv4;

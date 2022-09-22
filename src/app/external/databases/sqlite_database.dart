@@ -1,14 +1,14 @@
-import 'package:get_it/get_it.dart';
 import 'package:sqlite3/sqlite3.dart';
 
-import '../../app_environment.dart';
 import '../../data/databases/db_connection.dart';
 import '../../data/databases/db_result.dart';
 
 class SqliteDatabase implements DBConnection {
   SqliteDatabase() {
-    var env = GetIt.instance<AppEnv>();
-    db = sqlite3.open(env["DB_HOST_PATH"] ?? "");
+    var path = String.fromEnvironment('DB_PATH');
+    print("DB_PATH: $path");
+
+    db = sqlite3.open(path);
   }
   var db;
 

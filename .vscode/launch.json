@@ -4,19 +4,26 @@
     // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
     "version": "0.2.0",
     "configurations": [
+
         {
             "name": "Server Prod",
             "request": "launch",
             "type": "dart",
             "program": "bin/server.dart",
-            "args": ["--mode", "prod"]
+            "toolArgs": [
+                "--define=DB_TYPE=sqlite",
+                "--define=DB_PATH=/Users/raphaelpontes/Documents/Projetos/Dart/dart_server/assets/db/db.sqlite"
+            ]
         },
         {
             "name": "Server Dev",
             "request": "launch",
             "type": "dart",
             "program": "bin/server.dart",
-            "args": ["--mode", "dev"]
+            "toolArgs": [
+                "--define=DB_TYPE=sqlite",
+                "--define=DB_PATH=/Users/raphaelpontes/Documents/Projetos/Dart/dart_server/assets/db/db-dev.sqlite"
+            ]
         }
     ]
 }
