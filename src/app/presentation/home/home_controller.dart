@@ -7,7 +7,7 @@ import 'package:shelf/shelf.dart';
 class HomeController {
   FutureOr<Response> call(Request request) async {
     return Response.ok(
-      jsonEncode({"message": "Hello word!"}),
+      jsonEncode({"message": "Server ON!"}),
       headers: {HttpHeaders.contentTypeHeader: "application/json"},
     );
   }
