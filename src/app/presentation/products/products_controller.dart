@@ -45,9 +45,19 @@ class ProductsController {
   FutureOr<Response> getproductById(Request request, String id) async {
     try {
       ProductModel? product = await _getProductByIdImplUsecase(int.parse(id));
-      return Response.ok(
+
+      if (product != null) {
+        return Response.ok(
+          jsonEncode(
+            {"product": product.toMap()},
+          ),
+          headers: {HttpHeaders.contentTypeHeader: "application/json"},
+        );
+      }
+
+      return Response.notFound(
         jsonEncode(
-          {"product": product != null ? product.toMap() : 'Not found'},
+          {"product": null},
         ),
         headers: {HttpHeaders.contentTypeHeader: "application/json"},
       );
