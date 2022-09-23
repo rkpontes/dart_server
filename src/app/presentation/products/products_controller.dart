@@ -7,6 +7,7 @@ import 'package:shelf/shelf.dart';
 import '../../domain/dtos/product_dto.dart';
 import '../../domain/models/product_model.dart';
 import '../../domain/usecases/create_product_usecase.dart';
+import '../../domain/usecases/delete_product_usecase.dart';
 import '../../domain/usecases/get_all_products_usecase.dart';
 import '../../domain/usecases/get_product_by_id_usecase.dart';
 
@@ -15,12 +16,14 @@ class ProductsController {
     this._getAllProductsImplUsecase,
     this._getProductByIdImplUsecase,
     this._createProductUsecase,
+    this._deleteProductUsecase,
   );
 
   // final ProductsService service;
   final GetAllProductsUsecase _getAllProductsImplUsecase;
   final GetProductByIdUsecase _getProductByIdImplUsecase;
   final CreateProductUsecase _createProductUsecase;
+  final DeleteProductUsecase _deleteProductUsecase;
 
   FutureOr<Response> getAllProducts(Request request) async {
     try {
@@ -88,6 +91,35 @@ class ProductsController {
       return Response(
         201,
         body: jsonEncode({"product": newProduct.toMap()}),
+        headers: {HttpHeaders.contentTypeHeader: "application/json"},
+      );
+    } catch (e) {
+      return Response.internalServerError(
+        body: jsonEncode({
+          "error": e.toString(),
+        }),
+        headers: {HttpHeaders.contentTypeHeader: "application/json"},
+      );
+    }
+  }
+
+  FutureOr<Response> deleteProduct(Request request, String id) async {
+    try {
+      bool isDeleted = await _deleteProductUsecase(int.parse(id));
+
+      if (isDeleted) {
+        return Response.ok(
+          jsonEncode(
+            {"products": "Product removed"},
+          ),
+          headers: {HttpHeaders.contentTypeHeader: "application/json"},
+        );
+      }
+
+      return Response.notFound(
+        jsonEncode(
+          {"products": "Product not removed"},
+        ),
         headers: {HttpHeaders.contentTypeHeader: "application/json"},
       );
     } catch (e) {

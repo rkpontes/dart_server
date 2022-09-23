@@ -6,4 +6,6 @@ abstract class ProductsDatasource {
   Future<Map<String, dynamic>?> findProductById(int id);
 
   Future<Map<String, dynamic>?> createProduct(ProductDto productDto);
+
+  Future<bool?> deleteProduct(int id);
 }

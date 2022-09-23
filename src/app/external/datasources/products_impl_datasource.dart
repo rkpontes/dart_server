@@ -55,4 +55,22 @@ class ProductsImplDatasource implements ProductsDatasource {
       return null;
     }
   }
+
+  @override
+  Future<bool?> deleteProduct(int id) async {
+    await Future.delayed(Duration(milliseconds: 50));
+
+    try {
+      var res =
+          db.select('SELECT * FROM products WHERE id = ?', [id.toString()]);
+
+      if (res.isEmpty) return false;
+
+      db.query('DELETE FROM products where id = ?', [id.toString()]);
+      return true;
+    } catch (e) {
+      print(e.toString());
+      return false;
+    }
+  }
 }

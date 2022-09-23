@@ -7,4 +7,6 @@ abstract class ProductsRepository {
   Future<ProductModel?> findProductById(int id);
 
   Future<ProductModel?> createProduct(ProductDto productDto);
+
+  Future<bool> deleteProduct(int id);
 }

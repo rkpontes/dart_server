@@ -3,6 +3,7 @@ import 'package:shelf_router/shelf_router.dart';
 
 import 'data/repositories/products_impl_repository.dart';
 import 'domain/usecases/create_product_impl_usecase.dart';
+import 'domain/usecases/delete_product_impl_usecase.dart';
 import 'domain/usecases/get_all_products_impl_usecase.dart';
 import 'domain/usecases/get_product_by_id_impl_usecase.dart';
 import 'external/databases/sqlite_database.dart';
@@ -54,6 +55,9 @@ class AppInitialize {
     getIt.registerSingleton(
       CreateProductImplUsecase(getIt<ProductsImplRepository>()),
     );
+    getIt.registerSingleton(
+      DeleteProductImplUsecase(getIt<ProductsImplRepository>()),
+    );
 
     // Controllers
     getIt.registerSingleton(HomeController());
@@ -61,6 +65,7 @@ class AppInitialize {
       getIt<GetAllProductsImplUsecase>(),
       getIt<GetProductByIdImplUsecase>(),
       getIt<CreateProductImplUsecase>(),
+      getIt<DeleteProductImplUsecase>(),
     ));
   }
 
@@ -74,5 +79,6 @@ class AppInitialize {
     router.get("/products", productsController.getAllProducts);
     router.get("/products/<id>", productsController.getproductById);
     router.post("/products", productsController.createProduct);
+    router.delete("/products/<id>", productsController.deleteProduct);
   }
 }

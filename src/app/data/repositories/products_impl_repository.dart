@@ -28,4 +28,10 @@ class ProductsImplRepository implements ProductsRepository {
     if (data == null) return null;
     return ProductModel.fromMap(data);
   }
+
+  @override
+  Future<bool> deleteProduct(int id) async {
+    bool data = await _datasource.deleteProduct(id) ?? false;
+    return data;
+  }
 }
