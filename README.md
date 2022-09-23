@@ -30,7 +30,3 @@ You should see the logging printed in the first terminal:
 ```
 2021-05-06T15:47:04.620417  0:00:00.000158 GET     [200] /
 ```
-
-## Database
-
-Update database in files .env or .debug-env
